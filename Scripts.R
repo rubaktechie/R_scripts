@@ -141,3 +141,40 @@ x3 <- mtcars$mpg[mtcars$cyl==8]
 vioplot(x1, x2, x3,names = c("$ cyl", "6 cyl", "* cyl"),
         col = "gold")
 title("Violin Plots of Miles Per Galloon")
+library(aplpack)
+bagplot(wt, mpg, xlab = "Car Weight", ylab="Miles Per Gallon", 
+        main="Bagplot Example")
+
+hist(mtcars$mpg , main="HIstogram Example")
+
+
+x <- mtcars$mpg
+hist(x, breaks = 10,col = "red", xlab = "Miles per Galloon"
+     ,main="HIstogram with Normal curve")
+
+d <- density(mtcars$mpg)
+plot(d)
+
+
+plot(d, main = "Kernael Density per Galloon")
+polygon(d, col = "red",border = "blue")
+
+
+library(sm)
+
+cyl.f <- factor(cyl , levels = c(4,6,8))
+
+
+library(car)
+scatterplot(mpg ~ wt|cyl,data = mtcars,
+            xlab ="Weight of car" ,ylab="Miles Per Galloon"
+            , main = "Enhanced Scatter plot",
+            labels = row.names(mtcars))
+
+
+library(MASS)
+library(party)
+iris_ctree <- ctree(Species~Sepal.Length+Sepal.Width+Petal.Length+Petal.Width,
+           data= iris)
+print(iris_ctree)
+plot(iris_ctree)
