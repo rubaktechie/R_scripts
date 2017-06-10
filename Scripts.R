@@ -178,3 +178,66 @@ iris_ctree <- ctree(Species~Sepal.Length+Sepal.Width+Petal.Length+Petal.Width,
            data= iris)
 print(iris_ctree)
 plot(iris_ctree)
+
+
+#correlation
+attach(mtcars)
+#syntax Cor.test(x,y)
+cor.test(mpg,wt)
+#syntax with(data,cor.test(x,yl))
+with(mtcars,cor.test(mpg,wt))
+
+library(MASS)
+attach(cats)
+View(cats)
+#simple linear regression 
+lm.out = lm(Hwt~Bwt , data = cats)
+lm.out
+summary(lm.out)
+
+plot(Hwt~Bwt , data = cats)
+abline(lm.out , col = "red")
+par(mfrow = c(2,2))
+plot(lm.out)
+
+#multiple linear regression
+attach(head_injury)
+fit <- lm(clinically.important.brain.injury ~ age.65+ 
+            basal.skull.fracture+
+            loss.of.consciousness , data = head_injury)
+summary(fit)
+plot(fit)
+
+
+#logistic regression
+
+attach(Titanic2)
+train(1:1313)
+test(1:100)
+model<-glm(Survived ~ PClass +Age ,data = Titanic2)
+summary(model)
+plot(model)
+#analyse Twitter data
+library(twitteR)
+setup_twitter_oauth(consumer_key = "BaO3gQZjnFUi7eS85CNovU6uM"
+                    , consumer_secret = "SJLvFpLfur08IvkIlH8nEs702wtV1XKmt8EfY1RwbD36BZaEmj"
+                    , access_token = "835477396434255872-dLW4z8pP6JAhsi86vW8r5UW16CYbWTk"
+                    , access_secret = "qNmUob0wgpcFQq5s5U6b4r4l4iah0MyckVlWvFnfSqcHV")
+library(tm)
+library(wordcloud)
+library(RColorBrewer)
+mach_tweets = searchTwitter("Donald Trump", n=50 ,lang = "en")
+mach_text = sapply(mach_tweets,function(x)x$getText())
+mach_corpus = Corpus(VectorSource(mach_text))
+tdm = TermDocumentMatrix(mach_corpus,
+      control = list(removePunctuation = "TRUE",
+                stopwords = c("Donald" , "Trump", stopwords("english")),
+                removeNumbers = TRUE,tolower= TRUE ))
+png("MachinelearningCloud.png",
+    width = 12,
+    height = 8,
+    units = "in",
+    res = 300)
+wordcloud(tdm$word, tdm$freg, random.order = FALSE ,
+          colors = brewer.pal(8,"Dark2"))
+dev.off()
